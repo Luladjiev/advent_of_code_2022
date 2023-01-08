@@ -17,6 +17,23 @@ pub fn run() {
     }
 
     println!("Outcome is {}", sum);
+
+    let mut sum = 0;
+
+    for line in content.lines() {
+        let result: Vec<&str> = line.split(" ").collect();
+
+        let outcome = match result[1] {
+            "X" => Outcome::Lose,
+            "Y" => Outcome::Draw,
+            "Z" => Outcome::Win,
+            &_ => panic!("Invalid shape"),
+        };
+
+        sum += calculate_outcome2(outcome, result[0]);
+    }
+
+    println!("Outcome2 is {}", sum);
 }
 
 fn calculate_outcome(result: Vec<&str>) -> i32 {
@@ -62,4 +79,39 @@ fn get_outcome(result: Vec<&str>) -> Outcome {
     }
 
     return Outcome::Draw;
+}
+
+fn calculate_outcome2(outcome: Outcome, shape: &str) -> i32 {
+    return match outcome {
+        Outcome::Win => 6 + win(shape),
+        Outcome::Draw => 3 + draw(shape),
+        Outcome::Lose => 0 + lose(shape),
+    };
+}
+
+fn win(shape: &str) -> i32 {
+    return match shape {
+        "A" => 2,
+        "B" => 3,
+        "C" => 1,
+        &_ => panic!("Invalid shape"),
+    };
+}
+
+fn draw(shape: &str) -> i32 {
+    return match shape {
+        "A" => 1,
+        "B" => 2,
+        "C" => 3,
+        &_ => panic!("Invalid shape"),
+    };
+}
+
+fn lose(shape: &str) -> i32 {
+    return match shape {
+        "A" => 3,
+        "B" => 1,
+        "C" => 2,
+        &_ => panic!("Invalid shape"),
+    };
 }
